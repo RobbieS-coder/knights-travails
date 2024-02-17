@@ -23,47 +23,49 @@ class Square
   end
 end
 
-def knight_moves(starting_square, destination_square)
-  current_squares = []
-  next_squares = [Square.new(starting_square)]
+class KnightPathFinder
+  def knight_moves(starting_square, destination_square)
+    current_squares = []
+    next_squares = [Square.new(starting_square)]
 
-  until next_squares.any? { |square| square.coords == destination_square }
-    current_squares = next_squares
-    next_squares = []
+    until next_squares.any? { |square| square.coords == destination_square }
+      current_squares = next_squares
+      next_squares = []
 
-    current_squares.each { |square| square.find_next_squares.each { |next_square| next_squares << Square.new(next_square, square) } }
-  end
-
-  destinations = next_squares.select { |square| square.coords == destination_square }
-
-  paths = reconstruct_path(destinations)
-
-  pretty_print(paths)
-end
-
-def reconstruct_path(destinations)
-  paths = []
-
-  destinations.each do |current|
-    path = []
-
-    while current
-      path.unshift(current.coords)
-      current = current.parent
+      current_squares.each { |square| square.find_next_squares.each { |next_square| next_squares << Square.new(next_square, square) } }
     end
-    paths << path
+
+    destinations = next_squares.select { |square| square.coords == destination_square }
+
+    paths = reconstruct_path(destinations)
+
+    pretty_print(paths)
   end
 
-  paths
-end
+  private
 
-def pretty_print(paths)
-  puts "There are #{paths.size} possible paths which take #{paths.first.size - 1} moves."
+  def reconstruct_path(destinations)
+    paths = []
 
-  paths.each_with_index do |path, index|
-    puts "\nPath #{index + 1}:"
-    path.each { |coords| puts coords.inspect }
+    destinations.each do |current|
+      path = []
+
+      while current
+        path.unshift(current.coords)
+        current = current.parent
+      end
+      paths << path
+    end
+
+    paths
+  end
+
+  def pretty_print(paths)
+    puts "There are #{paths.size} possible paths which take #{paths.first.size - 1} moves."
+
+    paths.each_with_index do |path, index|
+      puts "\nPath #{index + 1}:"
+      path.each { |coords| puts coords.inspect }
+    end
   end
 end
-
-knight_moves([0,0],[7,7])
