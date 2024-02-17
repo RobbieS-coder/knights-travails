@@ -36,7 +36,9 @@ def knight_moves(starting_square, destination_square)
 
   destinations = next_squares.select { |square| square.coords == destination_square }
 
-  reconstruct_path(destinations)
+  paths = reconstruct_path(destinations)
+
+  pretty_print(paths)
 end
 
 def reconstruct_path(destinations)
@@ -54,3 +56,14 @@ def reconstruct_path(destinations)
 
   paths
 end
+
+def pretty_print(paths)
+  puts "There are #{paths.size} possible paths which take #{paths.first.size - 1} moves."
+
+  paths.each_with_index do |path, index|
+    puts "\nPath #{index + 1}:"
+    path.each { |coords| puts coords.inspect }
+  end
+end
+
+knight_moves([0,0],[7,7])
