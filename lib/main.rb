@@ -7,7 +7,19 @@ class Square
   end
 
   def find_next_squares
-    # Returns array of possible next squares
+    current_x, current_y = @coords
+    possible_moves = [
+    [current_x + 2, current_y + 1],
+    [current_x + 2, current_y - 1],
+    [current_x - 2, current_y + 1],
+    [current_x - 2, current_y - 1],
+    [current_x + 1, current_y + 2],
+    [current_x + 1, current_y - 2],
+    [current_x - 1, current_y + 2],
+    [current_x - 1, current_y - 2]
+  ]
+
+    possible_moves.select { |coords| coords.all? { |coord| coord.between?(0, 7) } }
   end
 end
 
