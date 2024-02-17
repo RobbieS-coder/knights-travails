@@ -27,10 +27,30 @@ def knight_moves(starting_square, destination_square)
   current_squares = []
   next_squares = [Square.new(starting_square)]
 
-  until next_squares.any { |square| square.square == destination_square }
+  until next_squares.any? { |square| square.coords == destination_square }
     current_squares = next_squares
     next_squares = []
 
     current_squares.each { |square| square.find_next_squares.each { |next_square| next_squares << Square.new(next_square, square) } }
   end
+
+  destinations = next_squares.select { |square| square.coords == destination_square }
+
+  reconstruct_path(destinations)
+end
+
+def reconstruct_path(destinations)
+  paths = []
+
+  destinations.each do |current|
+    path = []
+
+    while current
+      path.unshift(current.coords)
+      current = current.parent
+    end
+    paths << path
+  end
+
+  paths
 end
